@@ -6,6 +6,7 @@ import ballerinax/postgresql.driver as _;
 type Result record {| 
     string a;
     string b;
+    string apellido;
 |};
 
 service / on new http:Listener(8092) {
@@ -36,12 +37,12 @@ service / on new http:Listener(8092) {
                                                 database = "neondb",
                                                 port = 5432);
 
-        stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a, b FROM Persona WHERE a=${id}`);
+        stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a, b, apellido FROM Persona WHERE a=${id}`);
         map<json> resultOutput = {};
 
-        check from Result {a, b} in resultStream
+        check from Result {a, b, apellido} in resultStream
             do {
-                resultOutput[a] = {b};
+                resultOutput[a] = {b, apellido};
             };
 
         return resultOutput;
