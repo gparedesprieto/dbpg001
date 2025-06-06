@@ -14,7 +14,7 @@ service / on new http:Listener(8090) {
     resource function get list/[string country]() returns json|error {
 
         postgresql:Client pgClient = check new (host = "ep-polished-dew-ace0mauf-pooler.sa-east-1.aws.neon.tech",
-                                                user = "neondb_owner",
+                                                username = "neondb_owner",
                                                 password = "npg_k3OCBSqFx6mQ",
                                                 database = "neondb",
                                                 port = 5432);
