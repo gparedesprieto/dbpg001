@@ -340,3 +340,5 @@ modules = [
 ]
 
 
+[dependencies]
+ballerinax/postgresql = "1.8.0" # Verifica la última versión en Ballerina Central
