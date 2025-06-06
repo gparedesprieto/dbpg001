@@ -19,12 +19,12 @@ service / on new http:Listener(8090) {
                                                 database = "neondb",
                                                 port = 5432);
 
-        stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a FROM Persona WHERE a = ${country}`);
+        stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a, b FROM Persona WHERE a = ${country}`);
         map<json> resultOutput = {};
 
-        check from Result {registrationId, firstName, lastName} in resultStream
+        check from Result {registrationId, firstName} in resultStream
             do {
-                resultOutput[registrationId] = {firstName, lastName};
+                resultOutput[registrationId] = {firstName};
             };
 
         return resultOutput;
