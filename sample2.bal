@@ -4,8 +4,8 @@ import ballerinax/postgresql;
 import ballerinax/postgresql.driver as _;
 
 type Result record {| 
-    string registrationId;
-    string firstName;
+    string a;
+    string b;
 |};
 
 service / on new http:Listener(8092) {
