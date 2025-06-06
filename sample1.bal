@@ -9,8 +9,4 @@ service / on new http:Listener(8091) {
         return { message: "hix 2025", id: id };
     }
 
-    resource function get .[string restPath]() returns json {
-        return { message: "Catch all", path: restPath };
-    }
-
 }
