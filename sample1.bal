@@ -5,8 +5,12 @@ service / on new http:Listener(8091) {
         return { message: "hix 2025" };
     }
 
-    resource function get listada/[ string id ]() returns json {
+    resource function get listada/[string id]() returns json {
         return { message: "hix 2025", id: id };
+    }
+
+    resource function get .[string restPath]() returns json {
+        return { message: "Catch all", path: restPath };
     }
 
 }
