@@ -29,7 +29,7 @@ service / on new http:Listener(8092) {
         return resultOutput;
     }
 
-    resource function get listie/[string id]() returns json|error {
+    resource function get listie(string id) returns json|error {
 
         postgresql:Client pgClient = check new (host = "ep-polished-dew-ace0mauf-pooler.sa-east-1.aws.neon.tech",
                                                 username = "neondb_owner",
