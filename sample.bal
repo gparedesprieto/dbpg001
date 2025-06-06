@@ -1,7 +1,4 @@
 import ballerina/http;
-import ballerina/sql;
-import ballerinax/postgresql;
-import ballerinax/postgresql.driver as _;
 
 type Result record {| 
     string registrationId;
