@@ -24,9 +24,13 @@ service / on new http:Listener(8091) {
     }
 
     resource function patch datos(@http:Payload json inputJson) returns json|error {
+        string? nombre = inputJson.nombre.toString(); // valor o `()` si no existe
+        string? apellido = inputJson.apellido.toString(); // valor o `()` si no existe
         return {
             message: "JSON recibido correctamente",
-            recibido: inputJson
+            recibido: inputJson,
+            nombre: nombre,
+            apellido: apellido
         };
     }
 
