@@ -8,7 +8,7 @@ type Result record {|
     string firstName;
 |};
 
-service "/default/dbpg001/v1.0" on new http:Listener(8090) {
+service "/default/dbpg001/v1.0/" on new http:Listener(8090) {
     resource function get list/[string country]() returns json|error {
 
         postgresql:Client pgClient = check new (host = "ep-polished-dew-ace0mauf-pooler.sa-east-1.aws.neon.tech",
