@@ -9,4 +9,11 @@ service / on new http:Listener(8091) {
         return { message: "desde Choreo", id: id };
     }
 
+    resource function post datos(@http:Payload json inputJson) returns json|error {
+        return {
+            message: "JSON recibido correctamente",
+            recibido: inputJson
+        };
+    }
+
 }
