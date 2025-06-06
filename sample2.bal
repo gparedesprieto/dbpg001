@@ -9,7 +9,7 @@ type Result record {|
 |};
 
 service / on new http:Listener(8092) {
-    resource function get listy() returns json {
+    resource function get listy() returns json|error {
 
         postgresql:Client pgClient = check new (host = "ep-polished-dew-ace0mauf-pooler.sa-east-1.aws.neon.tech",
                                                 username = "neondb_owner",
