@@ -20,9 +20,9 @@ service / on new http:Listener(8092) {
         stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a, b FROM Persona`);
         map<json> resultOutput = {};
 
-        check from Result {registrationId, firstName} in resultStream
+        check from Result {a, b} in resultStream
             do {
-                resultOutput[registrationId] = {firstName};
+                resultOutput[a] = {b};
             };
 
         return resultOutput;
