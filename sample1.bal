@@ -5,7 +5,7 @@ service / on new http:Listener(8091) {
         return { message: "hix 2025" };
     }
 
-    resource function get listie/[string id](string id) returns json {
+    resource function get listie(string id) returns json {
         return { message: "desde Choreo", id: id };
     }
 
