@@ -3,6 +3,10 @@ import ballerina/sql;
 import ballerinax/postgresql;
 import ballerinax/postgresql.driver as _;
 
+type Persona record {
+    string nombre;
+};
+
 service / on new http:Listener(8091) {
     resource function get listado() returns json {
         return { message: "hix 2025" };
@@ -27,9 +31,12 @@ service / on new http:Listener(8091) {
     }
 
     resource function patch datos(@http:Payload json inputJson) returns json|error {
+        Persona persona = check inputJson.fromJsonWithType(Persona);
+
         return {
             message: "JSON recibido correctamente",
-            recibido: inputJson
+            recibido: inputJson,
+            nombre: persona.nombre
         };
     }
 
