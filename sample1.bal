@@ -1,4 +1,7 @@
 import ballerina/http;
+import ballerina/sql;
+import ballerinax/postgresql;
+import ballerinax/postgresql.driver as _;
 
 service / on new http:Listener(8091) {
     resource function get listado() returns json {
