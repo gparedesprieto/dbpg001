@@ -31,4 +31,23 @@ service / on new http:Listener(8091) {
         };
     }
 
+    resource function get listy() returns json|error {
+
+        postgresql:Client pgClient = check new (host = "ep-polished-dew-ace0mauf-pooler.sa-east-1.aws.neon.tech",
+                                                username = "neondb_owner",
+                                                password = "npg_k3OCBSqFx6mQ",
+                                                database = "neondb",
+                                                port = 5432);
+
+        stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a, b, apellido FROM Persona`);
+        map<json> resultOutput = {};
+
+        check from Result {a, b, apellido} in resultStream
+            do {
+                resultOutput[a] = {b, apellido};
+            };
+
+        return resultOutput;
+    }
+
 }
