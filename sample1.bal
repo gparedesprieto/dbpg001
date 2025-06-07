@@ -24,9 +24,8 @@ service / on new http:Listener(8091) {
     }
 
     resource function patch datos(@http:Payload json inputJson) returns json|error {
-        string nombre = check inputJson.nombre.toString();
         return {
-            message: "JSON recibido correctamente" + nombre,
+            message: "JSON recibido correctamente",
             recibido: inputJson
         };
     }
