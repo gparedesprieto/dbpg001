@@ -111,7 +111,7 @@ service / on new http:Listener(8091) {
                                                 database = database);
 
         // Ejecutar inserción — aquí no necesitas `query()` sino `execute()`
-        sql:ParameterizedQuery insertQuery = `INSERT INTO Persona (a, b, apellido) VALUES (${persona.codigo}, ${persona.nombre}, ${persona.nombre}, ${persona.edad})`;
+        sql:ParameterizedQuery insertQuery = `INSERT INTO Persona (a, b, apellido, edad) VALUES (${persona.codigo}, ${persona.nombre}, ${persona.nombre}, ${persona.edad})`;
         _ = check pgClient->execute(insertQuery);
 
         // Puedes devolver una respuesta simple de éxito
