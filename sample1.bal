@@ -92,4 +92,24 @@ service / on new http:Listener(8091) {
         return resultOutput;
     }
 
+    resource function post insData(@http:Payload json inputJson) returns json|error {
+        Persona Persona = check inputJson.fromJsonWithType(Persona);
+
+        postgresql:Client pgClient = check new (host = host,
+                                                username = username,
+                                                password = password,
+                                                database = database,
+                                                port = dbPort);
+
+        stream<Result, sql:Error?> resultStream = pgClient->query(`INSERT INTO Persona (a, b, apellido) VALUES ('000', ${Persona.nombre}, ${Persona.nombre})`);
+        map<json> resultOutput = {};
+
+        check from Result {a, b, apellido} in resultStream
+            do {
+                resultOutput[a] = {b, apellido};
+            };
+
+        return resultOutput;
+    }
+
 }
