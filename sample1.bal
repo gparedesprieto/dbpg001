@@ -3,6 +3,8 @@ import ballerina/sql;
 import ballerinax/postgresql;
 import ballerinax/postgresql.driver as _;
 
+configurable int dbPort = ?;
+
 type Persona record {
     string nombre;
     int edad;
@@ -54,7 +56,7 @@ service / on new http:Listener(8091) {
                                                 username = "neondb_owner",
                                                 password = "npg_k3OCBSqFx6mQ",
                                                 database = "neondb",
-                                                port = 5432);
+                                                port = dbPort);
 
         stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a, b, apellido FROM Persona WHERE a=${busPersona.id}`);
         map<json> resultOutput = {};
