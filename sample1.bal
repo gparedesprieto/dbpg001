@@ -3,8 +3,12 @@ import ballerina/sql;
 import ballerinax/postgresql;
 import ballerinax/postgresql.driver as _;
 
+configurable int host = ?;
+configurable int username = ?;
+configurable int password = ?;
+configurable int database = ?;
 configurable int dbPort = ?;
-
+                                         
 type Persona record {
     string nombre;
     int edad;
@@ -52,10 +56,10 @@ service / on new http:Listener(8091) {
     resource function post getData(@http:Payload json inputJson) returns json|error {
         BusPersona busPersona = check inputJson.fromJsonWithType(BusPersona);
 
-        postgresql:Client pgClient = check new (host = "ep-polished-dew-ace0mauf-pooler.sa-east-1.aws.neon.tech",
-                                                username = "neondb_owner",
-                                                password = "npg_k3OCBSqFx6mQ",
-                                                database = "neondb",
+        postgresql:Client pgClient = check new (host = host,
+                                                username = username,
+                                                password = password,
+                                                database = database,
                                                 port = dbPort);
 
         stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a, b, apellido FROM Persona WHERE a=${busPersona.id}`);
@@ -71,11 +75,11 @@ service / on new http:Listener(8091) {
 
     resource function get listy() returns json|error {
 
-        postgresql:Client pgClient = check new (host = "ep-polished-dew-ace0mauf-pooler.sa-east-1.aws.neon.tech",
-                                                username = "neondb_owner",
-                                                password = "npg_k3OCBSqFx6mQ",
-                                                database = "neondb",
-                                                port = 5432);
+        postgresql:Client pgClient = check new (host = host,
+                                                username = username,
+                                                password = password,
+                                                database = database,
+                                                port = dbPort);
 
         stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a, b, apellido FROM Persona`);
         map<json> resultOutput = {};
