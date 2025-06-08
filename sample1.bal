@@ -100,7 +100,7 @@ service / on new http:Listener(8091) {
         // Crear cliente de conexión a PostgreSQL
         postgresql:Client pgClient = check new (host = host,
                                                 port = dbPort,
-                                                user = username,
+                                                username = username,
                                                 password = password,
                                                 database = database);
 
