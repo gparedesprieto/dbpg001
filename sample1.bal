@@ -93,23 +93,23 @@ service / on new http:Listener(8091) {
     }
 
     resource function post insData(@http:Payload json inputJson) returns json|error {
+    
+        // Convertir el JSON a un objeto del tipo Persona
         Persona persona = check inputJson.fromJsonWithType(Persona);
 
+        // Crear cliente de conexión a PostgreSQL
         postgresql:Client pgClient = check new (host = host,
-                                                username = username,
+                                                port = dbPort,
+                                                user = username,
                                                 password = password,
-                                                database = database,
-                                                port = dbPort);
+                                                database = database);
 
-        stream<Result, sql:Error?> resultStream = pgClient->query(`INSERT INTO Persona (a, b, apellido) VALUES ('000', ${persona.nombre}, ${persona.nombre})`);
-        map<json> resultOutput = {};
+        // Ejecutar inserción — aquí no necesitas `query()` sino `execute()`
+        sql:ParameterizedQuery insertQuery = `INSERT INTO Persona (a, b, apellido) VALUES ('000', ${persona.nombre}, ${persona.nombre})`;
+        _ = check pgClient->execute(insertQuery);
 
-        check from Result {a, b, apellido} in resultStream
-            do {
-                resultOutput[a] = {b, apellido};
-            };
-
-        return resultOutput;
+        // Puedes devolver una respuesta simple de éxito
+        return { status: "success", nombre: persona.nombre };
     }
 
 }
