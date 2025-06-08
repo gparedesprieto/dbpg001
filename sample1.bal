@@ -19,6 +19,12 @@ type BusPersona record {
     string usuario;
 };
 
+type xPersona record {
+    string codigo;
+    string nombre;
+    int edad;
+};
+
 service / on new http:Listener(8091) {
     resource function get listado() returns json {
         return { message: "hix 2025" };
@@ -95,7 +101,7 @@ service / on new http:Listener(8091) {
     resource function post insData(@http:Payload json inputJson) returns json|error {
     
         // Convertir el JSON a un objeto del tipo Persona
-        Persona persona = check inputJson.fromJsonWithType(Persona);
+        xPersona persona = check inputJson.fromJsonWithType(xPersona);
 
         // Crear cliente de conexión a PostgreSQL
         postgresql:Client pgClient = check new (host = host,
@@ -105,7 +111,7 @@ service / on new http:Listener(8091) {
                                                 database = database);
 
         // Ejecutar inserción — aquí no necesitas `query()` sino `execute()`
-        sql:ParameterizedQuery insertQuery = `INSERT INTO Persona (a, b, apellido) VALUES ('000', ${persona.nombre}, ${persona.nombre})`;
+        sql:ParameterizedQuery insertQuery = `INSERT INTO Persona (a, b, apellido) VALUES (${persona.codigo}, ${persona.nombre}, ${persona.nombre}, ${persona.edad})`;
         _ = check pgClient->execute(insertQuery);
 
         // Puedes devolver una respuesta simple de éxito
