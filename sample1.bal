@@ -8,6 +8,11 @@ type Persona record {
     int edad;
 };
 
+type BusPersona record {
+    string id;
+    string usuario;
+};
+
 service / on new http:Listener(8091) {
     resource function get listado() returns json {
         return { message: "hix 2025" };
@@ -40,6 +45,26 @@ service / on new http:Listener(8091) {
             nombre: persona.nombre,
             edad: persona.edad
         };
+    }
+
+    resource function post getData(@http:Payload json inputJson) returns json|error {
+        BusPersona busPersona = check inputJson.fromJsonWithType(BusPersona);
+
+        postgresql:Client pgClient = check new (host = "ep-polished-dew-ace0mauf-pooler.sa-east-1.aws.neon.tech",
+                                                username = "neondb_owner",
+                                                password = "npg_k3OCBSqFx6mQ",
+                                                database = "neondb",
+                                                port = 5432);
+
+        stream<Result, sql:Error?> resultStream = pgClient->query(`SELECT a, b, apellido FROM Persona WHERE a=${busPersona.id}`);
+        map<json> resultOutput = {};
+
+        check from Result {a, b, apellido} in resultStream
+            do {
+                resultOutput[a] = {b, apellido};
+            };
+
+        return resultOutput;
     }
 
     resource function get listy() returns json|error {
