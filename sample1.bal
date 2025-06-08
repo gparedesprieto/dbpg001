@@ -61,7 +61,7 @@ service / on new http:Listener(8091) {
 
         check from Result {a, b, apellido} in resultStream
             do {
-                resultOutput[a] = {b, apellido};
+                resultOutput[a] = {b, apellido, ${busPersona.usuario}};
             };
 
         return resultOutput;
