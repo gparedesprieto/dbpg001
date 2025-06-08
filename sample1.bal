@@ -5,6 +5,7 @@ import ballerinax/postgresql.driver as _;
 
 type Persona record {
     string nombre;
+    int edad;
 };
 
 service / on new http:Listener(8091) {
@@ -36,7 +37,8 @@ service / on new http:Listener(8091) {
         return {
             message: "JSON recibido correctamente",
             recibido: inputJson,
-            nombre: persona.nombre
+            nombre: persona.nombre,
+            edad: persona.edad
         };
     }
 
