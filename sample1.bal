@@ -2,7 +2,13 @@ import ballerina/http;
 import ballerina/sql;
 import ballerinax/postgresql;
 import ballerinax/postgresql.driver as _;
-                                         
+
+configurable string host = ?;
+configurable string username = ?;
+configurable string password = ?;
+configurable string database = ?;
+configurable int dbPort = ?;
+                                 
 type Persona record {
     string nombre;
     int edad;
