@@ -3,6 +3,13 @@ import ballerina/sql;
 import ballerinax/mysql;
 import ballerinax/mysql.driver as _;
 
+configurable string host = ?;
+configurable string username = ?;
+configurable string password = ?;
+configurable string database = ?;
+configurable int dbPort = ?;
+
+
 type Result record {|
     string registrationId;
     string firstName;
