@@ -7,16 +7,24 @@ type getResult record {
     json data;
 };
 
-type xUsuario record {
+type xUsuarioPayload record {|
     string codigo;
     string usuarioAudit;
-};
+|};
 
-type evalUsuario record {
+type xUsuario record {|
+    xUsuarioPayload payload;
+|};
+
+type evalPayload record {|
     string codigos;
     string accion;
     string usuarioAudit;
-};
+|};
+
+type evalUsuario record {|
+    evalPayload payload;
+|};
 
 service / on new http:Listener(8093) {
 
