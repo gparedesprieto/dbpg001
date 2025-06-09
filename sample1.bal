@@ -134,7 +134,7 @@ service / on new http:Listener(8091) {
 
         // Llamada a la función PostgreSQL que retorna JSON
         UpsertResult result = check pgClient->queryRow(
-            `SELECT upsert_persona(${persona.codigo}, ${persona.nombre}, ${persona.apellido}, ${persona.edad}) AS upsert_persona`
+            `SELECT upsert_persona(${persona.codigo}, ${persona.nombre}, ${persona.apellido}, ${persona.edad}::integer) AS upsert_persona`
         );
 
         // Retornar el campo JSON de la función
