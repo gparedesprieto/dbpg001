@@ -60,4 +60,13 @@ service / on new http:Listener(8093) {
 
         return result.data;
     }
+
+    resource function delete eliminarUsuario(string codigos, string accion, string usuario) returns json|error {
+        
+        getResult result = check self.pgClient->queryRow(
+            `SELECT usuario_del(${codigos},${usuario}) AS data`
+        );
+
+        return result.data;
+    }
 }
