@@ -26,6 +26,10 @@ type xPersona record {
     int edad;
 };
 
+type UpsertResult record {
+    json upsert_persona;
+};
+
 service / on new http:Listener(8091) {
     resource function get listado() returns json {
         return { message: "hix 2025" };
@@ -117,6 +121,25 @@ service / on new http:Listener(8091) {
 
         // Puedes devolver una respuesta simple de éxito
         return { status: "success", nombre: persona.nombre };
+    }
+
+    resource function post upsertData(@http:Payload json inputJson) returns json|error {
+        xPersona persona = check inputJson.fromJsonWithType(xPersona);
+
+        postgresql:Client pgClient = check new ({
+                                                host: host,
+                                                port: dbPort,
+                                                username: username,
+                                                password: password,
+                                                database: database});
+
+        // Llamada a la función PostgreSQL que retorna JSON
+        UpsertResult result = check pgClient->queryRow(
+            `SELECT upsert_persona(${persona.codigo}, ${persona.nombre}, ${persona.apellido}, ${persona.edad}) AS upsert_persona`
+        );
+
+        // Retornar el campo JSON de la función
+        return result.upsert_persona;
     }
 
 }
