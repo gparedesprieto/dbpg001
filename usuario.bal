@@ -7,6 +7,17 @@ type getResult record {
     json data;
 };
 
+type xUsuario record {
+    string codigo;
+    string usuarioAudit;
+};
+
+type evalUsuario record {
+    string codigos;
+    string accion;
+    string usuarioAudit;
+};
+
 service / on new http:Listener(8093) {
 
     // Variable para almacenar el cliente PostgreSQL
@@ -52,19 +63,21 @@ service / on new http:Listener(8093) {
         return result.data;
     }
 
-    resource function post evaluarUsuario(string codigos, string accion, string usuario) returns json|error {
-        
+    resource function patch evaluarUsuario(@http:Payload json inputJson) returns json|error {
+        evalUsuario x = check inputJson.fromJsonWithType(evalUsuario);
+
         getResult result = check self.pgClient->queryRow(
-            `SELECT usuario_eval(${codigos},${accion},${usuario}) AS data`
+            `SELECT usuario_eval(${x.codigos},${x.accion},${x.usuarioAudit}) AS data`
         );
 
         return result.data;
     }
 
-    resource function delete eliminarUsuario(string codigos, string accion, string usuario) returns json|error {
-        
+    resource function delete eliminarUsuario(@http:Payload json inputJson) returns json|error {
+        xUsuario x = check inputJson.fromJsonWithType(xUsuario);
+
         getResult result = check self.pgClient->queryRow(
-            `SELECT usuario_del(${codigos},${usuario}) AS data`
+            `SELECT usuario_del(${x.codigo},${x.usuarioAudit}) AS data`
         );
 
         return result.data;
