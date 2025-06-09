@@ -170,7 +170,7 @@ service / on new http:Listener(8091) {
         
         UpsertResult result = check self.pgClient->queryRow(
             `SELECT upsert_persona($1) AS upsert_persona`,
-            sql:parameter(inputJson.toJsonString())
+                                   inputJson.toJsonString()
         );
 
         return result.upsert_persona;
