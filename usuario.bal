@@ -42,4 +42,13 @@ service / on new http:Listener(8093) {
 
         return result.data;
     }
+
+    resource function put guardarUsuario(@http:Payload json inputJson) returns json|error {
+        
+        getResult result = check self.pgClient->queryRow(
+            `SELECT upsert_Usuario(${inputJson.toJsonString()}) AS data`
+        );
+
+        return result.data;
+    }
 }
