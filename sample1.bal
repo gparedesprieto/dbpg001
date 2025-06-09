@@ -126,12 +126,11 @@ service / on new http:Listener(8091) {
     resource function post upsertData(@http:Payload json inputJson) returns json|error {
         xPersona persona = check inputJson.fromJsonWithType(xPersona);
 
-        postgresql:Client pgClient = check new ({
-                                                host: host,
-                                                port: dbPort,
-                                                username: username,
-                                                password: password,
-                                                database: database});
+        postgresql:Client pgClient = check new (host = host,
+                                                port = dbPort,
+                                                username = username,
+                                                password = password,
+                                                database = database);
 
         // Llamada a la función PostgreSQL que retorna JSON
         UpsertResult result = check pgClient->queryRow(
