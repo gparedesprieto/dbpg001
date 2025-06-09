@@ -34,7 +34,7 @@ service / on new http:Listener(8093) {
     resource function post UsuarioPaginaFiltro(@http:Payload json inputJson) returns json|error {
         
         getResult result = check self.pgClient->queryRow(
-            `SELECT ger_UsuarioPaginaFiltro($1) AS data`,
+            `SELECT get_UsuarioPaginaFiltro($1) AS data`,
                                    inputJson.toJsonString()
         );
 
