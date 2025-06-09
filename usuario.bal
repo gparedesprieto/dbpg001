@@ -72,7 +72,8 @@ service / on new http:Listener(8093) {
     }
 
     resource function patch evaluarUsuario(@http:Payload json inputJson) returns json|error {
-        evalUsuario x = check inputJson.fromJsonWithType(evalUsuario);
+        evalUsuario y = check inputJson.fromJsonWithType(evalUsuario);
+        evalPayload x = y.payload
 
         getResult result = check self.pgClient->queryRow(
             `SELECT usuario_eval(${x.codigos},${x.accion},${x.usuarioAudit}) AS data`
@@ -82,7 +83,8 @@ service / on new http:Listener(8093) {
     }
 
     resource function delete eliminarUsuario(@http:Payload json inputJson) returns json|error {
-        xUsuario x = check inputJson.fromJsonWithType(xUsuario);
+        xUsuario y = check inputJson.fromJsonWithType(xUsuario);
+        xUsuarioPayload x = y.payload;
 
         getResult result = check self.pgClient->queryRow(
             `SELECT usuario_del(${x.codigo},${x.usuarioAudit}) AS data`
