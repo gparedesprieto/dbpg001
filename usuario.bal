@@ -1,5 +1,4 @@
 import ballerina/http;
-//import ballerina/sql;
 import ballerinax/postgresql;
 import ballerinax/postgresql.driver as _;
 
@@ -73,7 +72,7 @@ service / on new http:Listener(8093) {
 
     resource function patch evaluarUsuario(@http:Payload json inputJson) returns json|error {
         evalUsuario y = check inputJson.fromJsonWithType(evalUsuario);
-        evalPayload x = y.payload
+        evalPayload x = y.payload;
 
         getResult result = check self.pgClient->queryRow(
             `SELECT usuario_eval(${x.codigos},${x.accion},${x.usuarioAudit}) AS data`
