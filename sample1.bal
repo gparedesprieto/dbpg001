@@ -154,7 +154,7 @@ service / on new http:Listener(8091) {
         return result.upsert_persona;
     }
 
-    resource function post upsertData2(@http:Payload json inputJson) returns json|error {
+    resource function post upsertData1(@http:Payload json inputJson) returns json|error {
         xPersona persona = check inputJson.fromJsonWithType(xPersona);
 
         // Llamada a la función PostgreSQL que retorna JSON
@@ -163,6 +163,15 @@ service / on new http:Listener(8091) {
         );
 
         // Retornar el campo JSON de la función
+        return result.upsert_persona;
+    }
+
+    resource function post upsertData2(@http:Payload json inputJson) returns json|error {
+        
+        UpsertResult result = check self.pgClient->queryRow(
+            `SELECT upsert_persona2(${inputJson}) AS upsert_persona`
+        );
+
         return result.upsert_persona;
     }
 
