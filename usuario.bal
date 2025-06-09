@@ -51,4 +51,13 @@ service / on new http:Listener(8093) {
 
         return result.data;
     }
+
+    resource function post evaluarUsuario(string codigos, string accion, string usuario) returns json|error {
+        
+        getResult result = check self.pgClient->queryRow(
+            `SELECT usuario_eval(${codigos},${accion},${usuario}) AS data`
+        );
+
+        return result.data;
+    }
 }
