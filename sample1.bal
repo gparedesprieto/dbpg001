@@ -169,8 +169,8 @@ service / on new http:Listener(8091) {
     resource function post upsertData2(@http:Payload json inputJson) returns json|error {
         
         UpsertResult result = check self.pgClient->queryRow(
-            `SELECT upsert_persona2($1::json) AS upsert_persona`,
-                                   inputJson
+            `SELECT upsert_persona4($1::jsonb) AS upsert_persona`,
+            inputJson.toJsonString()
         );
 
         return result.upsert_persona;
