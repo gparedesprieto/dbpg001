@@ -31,6 +31,19 @@ type UpsertResult record {
 };
 
 service / on new http:Listener(8091) {
+
+    // Variable para almacenar el cliente PostgreSQL
+    postgresql:Client pgClient;
+
+    // Constructor del servicio: se ejecuta al iniciar
+    function init() returns error? {
+        self.pgClient = check new (host = host,
+                                   username = username,
+                                   password = password,
+                                   database = database,
+                                   port = dbPort);
+    }
+
     resource function get listado() returns json {
         return { message: "hix 2025" };
     }
@@ -134,6 +147,18 @@ service / on new http:Listener(8091) {
 
         // Llamada a la función PostgreSQL que retorna JSON
         UpsertResult result = check pgClient->queryRow(
+            `SELECT upsert_persona(${persona.codigo}, ${persona.nombre}, ${persona.apellido}, ${persona.edad}::integer) AS upsert_persona`
+        );
+
+        // Retornar el campo JSON de la función
+        return result.upsert_persona;
+    }
+
+    resource function post upsertData2(@http:Payload json inputJson) returns json|error {
+        xPersona persona = check inputJson.fromJsonWithType(xPersona);
+
+        // Llamada a la función PostgreSQL que retorna JSON
+        UpsertResult result = check self.pgClient->queryRow(
             `SELECT upsert_persona(${persona.codigo}, ${persona.nombre}, ${persona.apellido}, ${persona.edad}::integer) AS upsert_persona`
         );
 
